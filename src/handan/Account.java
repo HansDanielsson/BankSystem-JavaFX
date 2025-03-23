@@ -132,8 +132,7 @@ public abstract class Account {
    * @return "kontonr saldo kontotyp <procent %>"
    */
   protected String infoAccount() {
-    String balanceStr = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(balance);
-    return accountNumber + " " + balanceStr + " " + accountType;
+    return accountNumber + " " + makePointCurrency(balance) + " " + accountType;
   }
 
   /**
@@ -144,16 +143,55 @@ public abstract class Account {
    * @return
    */
   protected String makeAccountInfo(double theInterestRate) {
-    String strBalance = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(balance);
     NumberFormat percentFormat = NumberFormat.getPercentInstance(Locale.of("SV", "SE"));
     percentFormat.setMaximumFractionDigits(1); // Anger att vi vill ha max 1 decimal
     String strPercent = percentFormat.format(theInterestRate / 100.0);
-    return accountNumber + " " + strBalance + " " + accountType + " " + strPercent;
+    strPercent = strPercent.replace(',', '.'); // Men decimal punkt
+    return accountNumber + " " + makePointCurrency(balance) + " " + accountType + " " + strPercent;
+  }
+
+  /**
+   * Privat hjälprutin till BigDecimal som byter "," till "." Underlättar vid
+   * kommande listor som är med avgränsare ,
+   *
+   * @param str
+   * @return Nu med punkt
+   */
+  private String makePointCurrency(BigDecimal theValue) {
+    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
+    str = str.replace(',', '.');
+    return str;
+  }
+
+  /**
+   * Protected hjälprutin till double som byter "," till "." Underlättar vid
+   * kommande listor som är med avgränsare ,
+   *
+   * @param str
+   * @return Nu med punkt
+   */
+  protected String makePointCurrency(double theValue) {
+    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
+    str = str.replace(',', '.');
+    return str;
+  }
+
+  /**
+   * Protected hjälprutin till int som byter "," till "." Underlättar vid kommande
+   * listor som är med avgränsare ,
+   *
+   * @param str
+   * @return Nu med punkt
+   */
+  protected String makePointCurrency(int theValue) {
+    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
+    str = str.replace(',', '.');
+    return str;
   }
 
   /**
    * Hjälpmetod att skapa en transaktion, gäller både för spar- och kredit-konto
-   * Skapa texten yyyy-MM-dd HH:mm:ss -500,00 kr Saldo: -500,00 kr, Lägg till det
+   * Skapa texten yyyy-MM-dd HH:mm:ss -500.00 kr Saldo: -500.00 kr, Lägg till det
    * i transaktionslistan
    *
    * @param theAmount
@@ -162,8 +200,8 @@ public abstract class Account {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     LocalDateTime date = LocalDateTime.now();
     String strDate = date.format(formatter);
-    String strBalance = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(balance);
-    String strAmount = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theAmount);
+    String strBalance = makePointCurrency(balance);
+    String strAmount = makePointCurrency(theAmount);
 
     String oneTransaction = strDate + " " + strAmount + " Saldo: " + strBalance;
     transactions.add(oneTransaction);

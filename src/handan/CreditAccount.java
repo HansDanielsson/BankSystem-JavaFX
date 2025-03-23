@@ -5,9 +5,6 @@
  */
 package handan;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 public class CreditAccount extends Account {
 
   // Variabler för enskilt kreditkonto
@@ -45,7 +42,7 @@ public class CreditAccount extends Account {
     int balance = getAccountBalance();
     double interestRate = balance > 0 ? getInterestRate() : deptInterest;
     double numberInterest = balance * interestRate / 100.0;
-    return NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(numberInterest);
+    return makePointCurrency(numberInterest);
   }
 
   @Override

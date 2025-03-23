@@ -5,6 +5,7 @@
 package handan;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -187,6 +188,22 @@ public class BankLogic {
 
     Account account = getSearchAccount(customer.getAccounts(), accountId);
     return account == null ? null : account.toString();
+  }
+
+  /**
+   * Lab 3 : Ny rutin som hämtar alla konton för en kund(pNo)
+   *
+   * @param pNo
+   * @return
+   */
+  public List<String> getAccountList(String pNo) {
+    Customer customer = getSearchCustomer(pNo);
+    if (customer == null || customer.getAccounts() == null) {
+      return Collections.emptyList();
+    }
+
+    return customer.getAccounts().stream().map(acc -> String.valueOf(acc.getAccountNumber()))
+        .collect(Collectors.toList());
   }
 
   /**
