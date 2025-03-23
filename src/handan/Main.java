@@ -109,11 +109,11 @@ public class Main extends Application {
    */
   private void bankBeloppCheck(short index) {
     String str = tfBelopp[index].getText();
-    int pos = str.indexOf(".");
+    int pos = str.indexOf("."); // Ta bort allt efter .
     if (pos > -1) {
       str = str.substring(0, pos);
     }
-    pos = str.indexOf(",");
+    pos = str.indexOf(","); // Ta bort allt efter ,
     if (pos > -1) {
       str = str.substring(0, pos);
     }
@@ -163,13 +163,13 @@ public class Main extends Application {
   private void bankMenuFile(short index) {
     switch (index) {
     case 0:
-      setStatusError("Läs in banken - Not implemented");
+      setStatusError("Läs in banken");
       break;
     case 1:
-      setStatusError("Spara banken - Not implemented");
+      setStatusError("Spara banken");
       break;
     case 2:
-      setStatusError("Spara transaktioner - Not implemented");
+      setStatusError("Spara transaktioner");
       break;
     case 3:
       System.exit(0);
