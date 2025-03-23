@@ -36,17 +36,15 @@ public class Main extends Application {
   private BorderPane borderPane = new BorderPane();
   // Menyer till BorderPane
   private Menu menuFile = new Menu("File");
-
   private String[] strMenuFile = { "Läs in banken", "Spara banken", "Spara transaktioner", "Avsluta" };
   private MenuItem[] menuItemFile = new MenuItem[strMenuFile.length];
-  private Menu menuCustomer = new Menu("Kund");
 
+  private Menu menuCustomer = new Menu("Kund");
   private String[] strMenuCustomer = { "Spara", "Hämta", "Byt namn", "Ta bort", "Lista" };
   private MenuItem[] menuItemCustomer = new MenuItem[strMenuCustomer.length];
+
   private Menu menuAccount = new Menu("Konton");
-
   private String[] strMenuAccount = { "Spar", "Kredit", "Saldo", "Sätta in", "Ta ut", "Transaktioner", "Ta bort" };
-
   private MenuItem[] menuItemAccount = new MenuItem[strMenuAccount.length];
 
   // Meny-hanterare, innehåller alla menyer
@@ -54,7 +52,7 @@ public class Main extends Application {
 
   // Spara knappen till olika syften
   private String[] strButton = { "Spara", "Hämta", "Byt namn", "Ta bort", "Spar", "Kredit", "Saldo", "Sätt in", "Ta ut",
-      "Transaktioner", "Ta bort" };
+      "Transaktioner", "Ta bort", "Läs in bank", "Spara bank", "Spara transaktioner" };
 
   // Deklaration av text/inmatning, som används på olika ställen
 
@@ -67,6 +65,10 @@ public class Main extends Application {
   private Label[] labelSurname = new Label[strButton.length];
   private TextField[] tfSurname = new TextField[strButton.length];
 
+  /**
+   * Man behöver bara använda en tfKontoList som används för alla listor på alla
+   * "sidor"
+   */
   private ObservableList<String> tfKontoList = FXCollections.observableArrayList();
   private Label[] labelKontoNr = new Label[strButton.length];
   private ListView<String>[] tfKontoNr = new ListView[strButton.length];
@@ -82,7 +84,7 @@ public class Main extends Application {
   private Label statusText = new Label();
 
   /**
-   * Rutin som fixar alla konton till ett pNr Givet att pNr är ifyllt
+   * Rutin som fixar alla konton till ett pNr, Givet att pNr är ifyllt
    *
    * @param index - Menyvalet
    */
@@ -93,7 +95,6 @@ public class Main extends Application {
       tfKontoList.clear();
       if (result != null) {
         tfKontoList.addAll(result);
-        // borderPane.setLeft(vbox[index]);
       }
       break;
     default:
@@ -348,7 +349,9 @@ public class Main extends Application {
    */
   private void getBankCustomer() {
     List<String> result = bank.getCustomer(tfPNo[1].getText());
-    putCenterText(result.toString(), false);
+    if (result != null) {
+      putCenterText(result.toString(), false);
+    }
   }
 
   /**
