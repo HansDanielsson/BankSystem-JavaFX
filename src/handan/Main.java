@@ -241,14 +241,16 @@ public class Main extends Application {
    * Rutin som tar bort ett konto(accountId) på kund(pNr)
    */
   private void closeBankAccount() {
+    String strKonto = tfKontoNr[10].getSelectionModel().getSelectedItem();
     try {
-      String str = bank.closeAccount(tfPNo[10].getText(),
-          Integer.parseInt(tfKontoNr[10].getSelectionModel().getSelectedItem()));
-      if (str != null) {
-        putCenterText(str, false);
+      if (!strKonto.isBlank()) {
+        String str = bank.closeAccount(tfPNo[10].getText(), Integer.parseInt(strKonto));
+        if (str != null) {
+          putCenterText(str, false);
+        }
       }
     } catch (Exception e) {
-      setStatusError("Felaktigt kontonummer: " + tfKontoNr[10].getSelectionModel().getSelectedItem());
+      setStatusError("Felaktigt kontonummer: " + strKonto);
     }
 
   }
@@ -302,16 +304,16 @@ public class Main extends Application {
    * Rutin som sätter in pengar på ett konto
    */
   private void depositBankAccount() {
+    String strKonto = tfKontoNr[7].getSelectionModel().getSelectedItem();
+    String strBelopp = tfBelopp[7].getText();
     try {
-      if (bank.deposit(tfPNo[7].getText(), Integer.parseInt(tfKontoNr[7].getSelectionModel().getSelectedItem()),
-          Integer.parseInt(tfBelopp[7].getText()))) {
+      if (bank.deposit(tfPNo[7].getText(), Integer.parseInt(strKonto), Integer.parseInt(strBelopp))) {
         setStatusOk(SAVED);
       } else {
         setStatusError(NOTSAVED);
       }
     } catch (Exception e) {
-      setStatusError(
-          "Felaktiga värden: " + tfKontoNr[7].getSelectionModel().getSelectedItem() + "/" + tfBelopp[7].getText());
+      setStatusError("Felaktiga värden: " + strKonto + "/" + strBelopp);
     }
   }
 
@@ -319,14 +321,16 @@ public class Main extends Application {
    * Rutin som hämtar saldo för ett konto
    */
   private void getBankAccount() {
+    String strKonto = tfKontoNr[6].getSelectionModel().getSelectedItem();
     try {
-      String str = bank.getAccount(tfPNo[6].getText(),
-          Integer.parseInt(tfKontoNr[6].getSelectionModel().getSelectedItem()));
-      if (str != null) {
-        putCenterText(str, false);
+      if (!strKonto.isBlank()) {
+        String str = bank.getAccount(tfPNo[6].getText(), Integer.parseInt(strKonto));
+        if (str != null) {
+          putCenterText(str, false);
+        }
       }
     } catch (Exception e) {
-      setStatusError("Felaktigt Kontonummer: " + tfKontoNr[6].getSelectionModel().getSelectedItem());
+      setStatusError("Felaktigt Kontonummer: " + strKonto);
     }
   }
 
@@ -351,12 +355,16 @@ public class Main extends Application {
    * Rutin som hämtar alla transaktioner för ett konto
    */
   private void getBankTransactions() {
+    String strKonto = tfKontoNr[9].getSelectionModel().getSelectedItem();
     try {
-      List<String> result = bank.getTransactions(tfPNo[9].getText(),
-          Integer.parseInt(tfKontoNr[9].getSelectionModel().getSelectedItem()));
-      putCenterText(result.toString(), true);
+      if (!strKonto.isBlank()) {
+        List<String> result = bank.getTransactions(tfPNo[9].getText(), Integer.parseInt(strKonto));
+        if (result != null) {
+          putCenterText(result.toString(), true);
+        }
+      }
     } catch (Exception e) {
-      setStatusError("Felaktigt kontonummer: " + tfKontoNr[9].getSelectionModel().getSelectedItem());
+      setStatusError("Felaktigt kontonummer: " + strKonto);
     }
   }
 

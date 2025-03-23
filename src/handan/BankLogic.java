@@ -268,7 +268,7 @@ public class BankLogic {
    *
    * @param pNo
    * @param accountId
-   * @return
+   * @return null or List<>
    */
   public List<String> getTransactions(String pNo, int accountId) {
     Customer customer = getSearchCustomer(pNo);
@@ -290,7 +290,7 @@ public class BankLogic {
    * @param pNo
    * @param accountId
    * @param amount
-   * @return
+   * @return true if ok
    */
   public boolean withdraw(String pNo, int accountId, int amount) {
     if (amount <= 0) {
