@@ -294,7 +294,7 @@ public class Main extends Application {
   private void deletBankCustomer() {
     List<String> result = bank.deleteCustomer(tfPNo[3].getText());
     if (result != null) {
-      putCenterText(result.toString(), false);
+      putCenterText(result.toString(), true);
     }
   }
 
