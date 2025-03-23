@@ -243,12 +243,12 @@ public class Main extends Application {
   private void closeBankAccount() {
     try {
       String str = bank.closeAccount(tfPNo[10].getText(),
-          Integer.parseInt(tfKontoNr[10].getSelectionModel().getSelectedItem().toString()));
+          Integer.parseInt(tfKontoNr[10].getSelectionModel().getSelectedItem()));
       if (str != null) {
         putCenterText(str, false);
       }
     } catch (Exception e) {
-      setStatusError("Felaktigt kontonummer: " + tfKontoNr[10].getSelectionModel().getSelectedItem().toString());
+      setStatusError("Felaktigt kontonummer: " + tfKontoNr[10].getSelectionModel().getSelectedItem());
     }
 
   }
@@ -303,16 +303,15 @@ public class Main extends Application {
    */
   private void depositBankAccount() {
     try {
-      if (bank.deposit(tfPNo[7].getText(),
-          Integer.parseInt(tfKontoNr[7].getSelectionModel().getSelectedItem().toString()),
+      if (bank.deposit(tfPNo[7].getText(), Integer.parseInt(tfKontoNr[7].getSelectionModel().getSelectedItem()),
           Integer.parseInt(tfBelopp[7].getText()))) {
         setStatusOk(SAVED);
       } else {
         setStatusError(NOTSAVED);
       }
     } catch (Exception e) {
-      setStatusError("Felaktiga värden: " + tfKontoNr[7].getSelectionModel().getSelectedItem().toString() + "/"
-          + tfBelopp[7].getText());
+      setStatusError(
+          "Felaktiga värden: " + tfKontoNr[7].getSelectionModel().getSelectedItem() + "/" + tfBelopp[7].getText());
     }
   }
 
@@ -322,12 +321,12 @@ public class Main extends Application {
   private void getBankAccount() {
     try {
       String str = bank.getAccount(tfPNo[6].getText(),
-          Integer.parseInt(tfKontoNr[6].getSelectionModel().getSelectedItem().toString()));
+          Integer.parseInt(tfKontoNr[6].getSelectionModel().getSelectedItem()));
       if (str != null) {
         putCenterText(str, false);
       }
     } catch (Exception e) {
-      setStatusError("Felaktigt Kontonummer: " + tfKontoNr[6].getSelectionModel().getSelectedItem().toString());
+      setStatusError("Felaktigt Kontonummer: " + tfKontoNr[6].getSelectionModel().getSelectedItem());
     }
   }
 
@@ -354,10 +353,10 @@ public class Main extends Application {
   private void getBankTransactions() {
     try {
       List<String> result = bank.getTransactions(tfPNo[9].getText(),
-          Integer.parseInt(tfKontoNr[9].getSelectionModel().getSelectedItem().toString()));
+          Integer.parseInt(tfKontoNr[9].getSelectionModel().getSelectedItem()));
       putCenterText(result.toString(), true);
     } catch (Exception e) {
-      setStatusError("Felaktigt kontonummer: " + tfKontoNr[9].getSelectionModel().getSelectedItem().toString());
+      setStatusError("Felaktigt kontonummer: " + tfKontoNr[9].getSelectionModel().getSelectedItem());
     }
   }
 
@@ -504,7 +503,7 @@ public class Main extends Application {
    */
   private void withdrawBankAccount() {
     try {
-      int accountId = Integer.parseInt(tfKontoNr[8].getSelectionModel().getSelectedItem().toString());
+      int accountId = Integer.parseInt(tfKontoNr[8].getSelectionModel().getSelectedItem());
       int amount = Integer.parseInt(tfBelopp[8].getText());
       if (bank.withdraw(tfPNo[8].getText(), accountId, amount)) {
         setStatusOk(SAVED);
@@ -512,8 +511,8 @@ public class Main extends Application {
         setStatusError(NOTSAVED);
       }
     } catch (Exception e) {
-      setStatusError("Felaktiga värden: " + tfKontoNr[8].getSelectionModel().getSelectedItem().toString() + "/"
-          + tfBelopp[8].getText());
+      setStatusError(
+          "Felaktiga värden: " + tfKontoNr[8].getSelectionModel().getSelectedItem() + "/" + tfBelopp[8].getText());
     }
 
   }
