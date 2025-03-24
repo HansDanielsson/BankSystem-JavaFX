@@ -15,6 +15,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -79,6 +81,17 @@ public class Main extends Application {
   private Button[] saveButton = new Button[strButton.length];
 
   private VBox[] vbox = new VBox[strButton.length];
+
+  // Bilder att visa i högra delen
+  private Image imageBag = new Image("file:src/handan/files/bag-96x96.png");
+  private Image imagePiggy = new Image("file:src/handan/files/piggy-bank-96x96.png");
+  private Image imageSafe = new Image("file:src/handan/files/safe-96x96.png");
+
+  // Skapa 3 ImageView för att visa bilderna
+  private ImageView bagImageView = new ImageView(imageBag);
+  private ImageView piggyImageView = new ImageView(imagePiggy);
+  private ImageView safeImageView = new ImageView(imageSafe);
+  private VBox imageVBox = new VBox(20);
 
   private TextArea textArea = new TextArea();
   private Label statusText = new Label();
@@ -491,8 +504,11 @@ public class Main extends Application {
         vbox[i].getChildren().add(saveButton[i]);
       }
 
+      imageVBox.getChildren().addAll(bagImageView, piggyImageView, safeImageView);
+
       borderPane.setTop(menuBar);
       borderPane.setBottom(statusText);
+      borderPane.setRight(imageVBox);
 
       // Skapar upp en scene med borderPane, bredd, höjd samt bakgrundsfärg som
       // argument
