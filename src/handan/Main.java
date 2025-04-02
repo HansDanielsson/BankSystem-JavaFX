@@ -73,6 +73,7 @@ public class Main extends Application {
    */
   private ObservableList<String> tfKontoList = FXCollections.observableArrayList();
   private Label[] labelKontoNr = new Label[strButton.length];
+  @SuppressWarnings("unchecked")
   private ListView<String>[] tfKontoNr = new ListView[strButton.length];
 
   private Label[] labelBelopp = new Label[strButton.length];
@@ -457,7 +458,7 @@ public class Main extends Application {
         tfSurname[i] = new TextField();
 
         labelKontoNr[i] = new Label("Kontonr: ");
-        tfKontoNr[i] = new ListView<String>(tfKontoList);
+        tfKontoNr[i] = new ListView<>(tfKontoList);
 
         labelBelopp[i] = new Label("Belopp: ");
         tfBelopp[i] = new TextField();
