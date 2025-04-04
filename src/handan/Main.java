@@ -417,6 +417,8 @@ public class Main extends Application {
 
   /**
    * Rutin som visar i status texten ett felmeddelande
+   *
+   * @param str - Meddelandet
    */
   private void setStatusError(String str) {
     statusText.setText(str);
@@ -425,6 +427,8 @@ public class Main extends Application {
 
   /**
    * Rutin som visar i status texten ett ok-meddelande
+   *
+   * @param str - Meddelandet
    */
   private void setStatusOk(String str) {
     statusText.setText(str);
@@ -466,6 +470,10 @@ public class Main extends Application {
 
       // Initierar alla "sidor" med olika fält
       for (i = 0; i < strButton.length; i++) {
+
+        labelPNo[i] = new Label("Personnummer: ");
+        tfPNo[i] = new TextField();
+
         labelName[i] = new Label("Förnamn: ");
         tfName[i] = new TextField();
 
@@ -478,10 +486,9 @@ public class Main extends Application {
         labelBelopp[i] = new Label("Belopp: ");
         tfBelopp[i] = new TextField();
 
-        labelPNo[i] = new Label("Personnummer: ");
-        tfPNo[i] = new TextField();
-
         saveButton[i] = new Button(strButton[i]);
+
+        // Aktivera händelser efter inmatning på valda fält
         final short index = i;
         saveButton[i].setOnAction(_ -> bankMenuSave(index));
         tfPNo[i].focusedProperty().addListener(_ -> bankAccountList(index));
