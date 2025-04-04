@@ -1,5 +1,6 @@
 package handan;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
@@ -13,7 +14,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -72,6 +72,8 @@ public class Main extends Application {
    * "sidor"
    */
   private ObservableList<String> tfKontoList = FXCollections.observableArrayList();
+  private ObservableList<String> tfResultList = FXCollections.observableArrayList();
+
   private Label[] labelKontoNr = new Label[strButton.length];
   @SuppressWarnings("unchecked")
   private ListView<String>[] tfKontoNr = new ListView[strButton.length];
@@ -94,7 +96,7 @@ public class Main extends Application {
   private ImageView safeImageView = new ImageView(imageSafe);
   private VBox imageVBox = new VBox(20);
 
-  private TextArea textArea = new TextArea();
+  private ListView<String> centralResult = new ListView<>(tfResultList);
   private Label statusText = new Label();
 
   /**
@@ -261,7 +263,9 @@ public class Main extends Application {
       if (!strKonto.isBlank()) {
         String str = bank.closeAccount(tfPNo[10].getText(), Integer.parseInt(strKonto));
         if (str != null) {
-          putCenterText(str, false);
+          List<String> result = new ArrayList<>();
+          result.add(str);
+          putCenterText(result);
         }
       }
     } catch (Exception e) {
@@ -276,7 +280,9 @@ public class Main extends Application {
   private void createBankCreditAccount() {
     int accountId = bank.createCreditAccount(tfPNo[5].getText());
     if (accountId > 0) {
-      putCenterText("Kontonummer: " + accountId, false);
+      List<String> result = new ArrayList<>();
+      result.add("Kontonummer: " + accountId);
+      putCenterText(result);
     } else {
       setStatusError(NOTSAVED);
     }
@@ -299,7 +305,9 @@ public class Main extends Application {
   private void createBankSavingAccount() {
     int accountId = bank.createSavingsAccount(tfPNo[4].getText());
     if (accountId > 0) {
-      putCenterText("Kontonummer: " + accountId, false);
+      List<String> result = new ArrayList<>();
+      result.add("Kontonummer: " + accountId);
+      putCenterText(result);
     } else {
       setStatusError(NOTSAVED);
     }
@@ -311,7 +319,7 @@ public class Main extends Application {
   private void deletBankCustomer() {
     List<String> result = bank.deleteCustomer(tfPNo[3].getText());
     if (result != null) {
-      putCenterText(result.toString(), true);
+      putCenterText(result);
     }
   }
 
@@ -341,7 +349,9 @@ public class Main extends Application {
       if (!strKonto.isBlank()) {
         String str = bank.getAccount(tfPNo[6].getText(), Integer.parseInt(strKonto));
         if (str != null) {
-          putCenterText(str, false);
+          List<String> result = new ArrayList<>();
+          result.add(str);
+          putCenterText(result);
         }
       }
     } catch (Exception e) {
@@ -355,7 +365,9 @@ public class Main extends Application {
    */
   private void getBankAllCustomers() {
     List<String> result = bank.getAllCustomers();
-    putCenterText(result.toString(), true);
+    if (result != null) {
+      putCenterText(result);
+    }
   }
 
   /**
@@ -364,7 +376,7 @@ public class Main extends Application {
   private void getBankCustomer() {
     List<String> result = bank.getCustomer(tfPNo[1].getText());
     if (result != null) {
-      putCenterText(result.toString(), false);
+      putCenterText(result);
     }
   }
 
@@ -377,7 +389,7 @@ public class Main extends Application {
       if (!strKonto.isBlank()) {
         List<String> result = bank.getTransactions(tfPNo[9].getText(), Integer.parseInt(strKonto));
         if (result != null) {
-          putCenterText(result.toString(), true);
+          putCenterText(result);
         }
       }
     } catch (Exception e) {
@@ -386,19 +398,14 @@ public class Main extends Application {
   }
 
   /**
-   * Hjälprutin som sätter texten i centrum rutan Tar bort tecken [ och ], byter
-   * till radbrytning
+   * Hjälprutin som sätter texten i centrum rutan. Kontrollen är utfört redan
+   * innan anropet att strResult pekar på något.
    *
-   * @param str
-   * @param radbryt
+   * @param strResult
    */
-  private void putCenterText(String str, boolean radbryt) {
-    if (radbryt) {
-      str = str.replace(',', '\n');
-    }
-    str = str.replace('[', ' ').replace(']', ' ');
-    textArea.setText(str);
-    borderPane.setCenter(textArea);
+  private void putCenterText(List<String> strResult) {
+    tfResultList.clear();
+    tfResultList.addAll(strResult);
   }
 
   /**
@@ -508,6 +515,7 @@ public class Main extends Application {
       imageVBox.getChildren().addAll(bagImageView, piggyImageView, safeImageView);
 
       borderPane.setTop(menuBar);
+      borderPane.setCenter(centralResult);
       borderPane.setBottom(statusText);
       borderPane.setRight(imageVBox);
 
