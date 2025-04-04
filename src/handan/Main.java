@@ -1,8 +1,14 @@
+/**
+ * Huvudmodul som definierar ett GUI.
+ * @author Hans Danielsson, handan-2
+ */
 package handan;
 
+//Importsatser
 import java.util.ArrayList;
 import java.util.List;
 
+//Importsatser för JavaFX med olika API rutiner
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +31,6 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
   private static final String SAVED = "Sparad - Ok";
-
   private static final String NOTSAVED = "Ej sparad";
 
   public static void main(String[] args) {
@@ -34,6 +39,7 @@ public class Main extends Application {
 
   // bank-hanteraren
   private BankLogic bank = new BankLogic();
+
   // Skapar upp en BorderPane
   private BorderPane borderPane = new BorderPane();
   // Menyer till BorderPane
@@ -75,6 +81,8 @@ public class Main extends Application {
   private ObservableList<String> tfResultList = FXCollections.observableArrayList();
 
   private Label[] labelKontoNr = new Label[strButton.length];
+
+  // Ignorerar varningen, det blir rätt kod ändå.
   @SuppressWarnings("unchecked")
   private ListView<String>[] tfKontoNr = new ListView[strButton.length];
 
@@ -360,8 +368,7 @@ public class Main extends Application {
   }
 
   /**
-   * Rutin som hämtar alla kunder till textArea och visar det i fönster Center
-   * Möjlig förbättring är med list-funktion när det är många rader.
+   * Rutin som hämtar alla kunder och visar det i fönster Center
    */
   private void getBankAllCustomers() {
     List<String> result = bank.getAllCustomers();
@@ -457,6 +464,7 @@ public class Main extends Application {
         menuAccount.getItems().add(menuItemAccount[i]);
       }
 
+      // Initierar alla "sidor" med olika fält
       for (i = 0; i < strButton.length; i++) {
         labelName[i] = new Label("Förnamn: ");
         tfName[i] = new TextField();
