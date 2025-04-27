@@ -213,8 +213,8 @@ public class Main extends Application {
    */
   private void bankMenuFile(short index) {
     switch (index) {
-    case 0 -> setStatusError("Läs in banken");
-    case 1 -> setStatusError("Spara banken");
+    case 0 -> setStatusError("Spara banken");
+    case 1 -> setStatusError("Läs in banken");
     case 2 -> setStatusError("Spara transaktioner");
     case 3 -> setStatusError("Visa transaktioner");
     case 4 -> System.exit(0);
