@@ -12,6 +12,21 @@ import java.util.stream.Stream;
 
 public class BankLogic {
 
+  /**
+   * Hjälpmetod som letar reda på ett konto
+   *
+   * @param accounts         , Lista med konton
+   * @param theAccountNumber , som söks upp
+   * @return result , pekare till konto om det finns.
+   */
+  private static Account getSearchAccount(List<Account> accounts, int theAccountNumber) {
+    if (accounts == null) {
+      return null;
+    }
+
+    return accounts.stream().filter(acc -> acc.getAccountNumber() == theAccountNumber).findFirst().orElse(null);
+  }
+
   private List<Customer> bankCustomer = new ArrayList<>();
 
   /**
@@ -138,14 +153,15 @@ public class BankLogic {
     List<String> deList = new ArrayList<>();
     deList.add(customer.toString());
 
-    if (customer.getAccounts() != null && !customer.getAccounts().isEmpty()) { // Kund har konton
-      for (Account account : customer.getAccounts()) {
+    List<Account> accounts = customer.getAccounts();
+    if (accounts != null && !accounts.isEmpty()) { // Kund har konton
+      for (Account account : accounts) {
         deList.add(account.infoAccount() + " " + account.calculateInterest());
         // Ta bort Transaktionerna
-        account.getAccountTransactions().clear();
+        account.deleteTransactions();
       }
       // Ta bort kontot
-      customer.getAccounts().clear();
+      customer.deleteAccounts();
     }
     bankCustomer.remove(customer);
     return List.copyOf(deList);
@@ -231,21 +247,6 @@ public class BankLogic {
         .concat(Stream.of(customer.toString()),
             customer.getAccounts() == null ? Stream.empty() : customer.getAccounts().stream().map(Account::toString))
         .collect(Collectors.toUnmodifiableList());
-  }
-
-  /**
-   * Hjälpmetod som letar reda på ett konto
-   *
-   * @param accounts         , Lista med konton
-   * @param theAccountNumber , som söks upp
-   * @return result , pekare till konto om det finns.
-   */
-  private Account getSearchAccount(List<Account> accounts, int theAccountNumber) {
-    if (accounts == null) {
-      return null;
-    }
-
-    return accounts.stream().filter(acc -> acc.getAccountNumber() == theAccountNumber).findFirst().orElse(null);
   }
 
   /**

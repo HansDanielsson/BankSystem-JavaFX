@@ -4,9 +4,8 @@
  */
 package handan;
 
-//Importsatser
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 //Importsatser för JavaFX med olika API rutiner
 import javafx.application.Application;
@@ -33,79 +32,147 @@ public class Main extends Application {
   private static final String SAVED = "Sparad - Ok";
   private static final String NOTSAVED = "Ej sparad";
 
-  public static void main(String[] args) {
-    launch(args);
-  }
-
-  // bank-hanteraren
-  private BankLogic bank = new BankLogic();
-
   // Skapar upp en BorderPane
-  private BorderPane borderPane = new BorderPane();
+  private static BorderPane borderPane = new BorderPane();
+
   // Menyer till BorderPane
-  private Menu menuFile = new Menu("File");
-  private String[] strMenuFile = { "Läs in banken", "Spara banken", "Spara transaktioner", "Avsluta" };
-  private MenuItem[] menuItemFile = new MenuItem[strMenuFile.length];
+  private static Menu menuFile = new Menu("File");
 
-  private Menu menuCustomer = new Menu("Kund");
-  private String[] strMenuCustomer = { "Spara", "Hämta", "Byt namn", "Ta bort", "Lista" };
-  private MenuItem[] menuItemCustomer = new MenuItem[strMenuCustomer.length];
+  private static final String[] strMenuFile = { "Spara banken", "Läs in banken", "Spara transaktioner",
+      "Visa transaktioner", "Avsluta" };
 
-  private Menu menuAccount = new Menu("Konton");
-  private String[] strMenuAccount = { "Spar", "Kredit", "Saldo", "Sätta in", "Ta ut", "Transaktioner", "Ta bort" };
-  private MenuItem[] menuItemAccount = new MenuItem[strMenuAccount.length];
+  private static MenuItem[] menuItemFile = new MenuItem[strMenuFile.length];
+  private static Menu menuCustomer = new Menu("Kund");
+  private static final String[] strMenuCustomer = { "Spara", "Hämta", "Byt namn", "Ta bort", "Lista" };
 
+  private static MenuItem[] menuItemCustomer = new MenuItem[strMenuCustomer.length];
+  private static Menu menuAccount = new Menu("Konton");
+  private static final String[] strMenuAccount = { "Spar", "Kredit", "Saldo", "Sätta in", "Ta ut", "Transaktioner",
+      "Ta bort" };
+
+  private static MenuItem[] menuItemAccount = new MenuItem[strMenuAccount.length];
   // Meny-hanterare, innehåller alla menyer
-  private MenuBar menuBar = new MenuBar(menuFile, menuCustomer, menuAccount);
-
+  private static MenuBar menuBar = new MenuBar(menuFile, menuCustomer, menuAccount);
   // Spara knappen till olika syften
-  private String[] strButton = { "Spara", "Hämta", "Byt namn", "Ta bort", "Spar", "Kredit", "Saldo", "Sätt in", "Ta ut",
-      "Transaktioner", "Ta bort", "Läs in bank", "Spara bank", "Spara transaktioner" };
+  private static final String[] strButton = { "Spara", "Hämta", "Byt namn", "Ta bort", "Spar", "Kredit", "Saldo",
+      "Sätt in", "Ta ut", "Transaktioner", "Ta bort" };
+
+  private static Label[] labelPNo = new Label[strButton.length];
+
+  private static TextField[] tfPNo = new TextField[strButton.length];
 
   // Deklaration av text/inmatning, som används på olika ställen
 
-  private Label[] labelPNo = new Label[strButton.length];
-  private TextField[] tfPNo = new TextField[strButton.length];
+  private static Label[] labelName = new Label[strButton.length];
+  private static TextField[] tfName = new TextField[strButton.length];
 
-  private Label[] labelName = new Label[strButton.length];
-  private TextField[] tfName = new TextField[strButton.length];
-
-  private Label[] labelSurname = new Label[strButton.length];
-  private TextField[] tfSurname = new TextField[strButton.length];
+  private static Label[] labelSurname = new Label[strButton.length];
+  private static TextField[] tfSurname = new TextField[strButton.length];
 
   /**
    * Man behöver bara använda en tfKontoList som används för alla listor på alla
    * "sidor"
    */
-  private ObservableList<String> tfKontoList = FXCollections.observableArrayList();
-  private ObservableList<String> tfResultList = FXCollections.observableArrayList();
+  private static ObservableList<String> tfKontoList = FXCollections.observableArrayList();
+  private static ObservableList<String> tfResultList = FXCollections.observableArrayList();
 
-  private Label[] labelKontoNr = new Label[strButton.length];
+  private static Label[] labelKontoNr = new Label[strButton.length];
 
   // Ignorerar varningen, det blir rätt kod ändå.
   @SuppressWarnings("unchecked")
-  private ListView<String>[] tfKontoNr = new ListView[strButton.length];
+  private static ListView<String>[] tfKontoNr = new ListView[strButton.length];
 
-  private Label[] labelBelopp = new Label[strButton.length];
-  private TextField[] tfBelopp = new TextField[strButton.length];
+  private static Label[] labelBelopp = new Label[strButton.length];
 
-  private Button[] saveButton = new Button[strButton.length];
+  private static TextField[] tfBelopp = new TextField[strButton.length];
 
-  private VBox[] vbox = new VBox[strButton.length];
+  private static Button[] saveButton = new Button[strButton.length];
+  private static VBox[] vbox = new VBox[strButton.length];
 
   // Bilder att visa i högra delen
-  private Image imageBag = new Image("file:src/handan/files/bag-96x96.png");
-  private Image imagePiggy = new Image("file:src/handan/files/piggy-bank-96x96.png");
-  private Image imageSafe = new Image("file:src/handan/files/safe-96x96.png");
-
+  private static final Image imageBag = new Image("file:src/handan/files/bag-96x96.png");
+  private static final Image imagePiggy = new Image("file:src/handan/files/piggy-bank-96x96.png");
+  private static final Image imageSafe = new Image("file:src/handan/files/safe-96x96.png");
   // Skapa 3 ImageView för att visa bilderna
-  private ImageView bagImageView = new ImageView(imageBag);
-  private ImageView piggyImageView = new ImageView(imagePiggy);
-  private ImageView safeImageView = new ImageView(imageSafe);
-  private VBox imageVBox = new VBox(20);
+  private static ImageView bagImageView = new ImageView(imageBag);
+  private static ImageView piggyImageView = new ImageView(imagePiggy);
+  private static ImageView safeImageView = new ImageView(imageSafe);
+  private static VBox imageVBox = new VBox(20);
+  private static ListView<String> centralResult = new ListView<>(tfResultList);
+  private static Label statusText = new Label();
 
-  private ListView<String> centralResult = new ListView<>(tfResultList);
-  private Label statusText = new Label();
+  /**
+   * Hjälprutin som kollar att belopp är utan decimaler. Systemet är byggt på
+   * modellen integer.
+   *
+   * @param index - Beloppet som ska kollas upp
+   */
+  private static void bankBeloppCheck(short index) {
+    String str = tfBelopp[index].getText();
+    int dotPos = str.indexOf("."); // Ta bort allt efter .
+    int commaPos = str.indexOf(","); // Ta bort allt efter ,
+    int cutPos = (dotPos == -1) ? commaPos : (commaPos == -1 ? dotPos : Math.min(dotPos, commaPos));
+
+    if (cutPos > -1) {
+      str = str.substring(0, cutPos);
+    }
+
+    tfBelopp[index].setText(str);
+  }
+
+  /**
+   * Rutin som utför menyval under Konto
+   *
+   * @param index - Menyvalet
+   */
+  private static void bankMenuAccount(short index) {
+    switch (index) {
+    case 0, 1, 2, 3, 4, 5, 6: // Konto kommando
+      borderPane.setLeft(vbox[index + 4]);
+      break;
+    default:
+      setStatusError("Konton, index = " + index);
+      break;
+    }
+  }
+
+  public static void main(String[] args) {
+    launch(args);
+  }
+
+  /**
+   * Hjälprutin som sätter texten i centrum rutan. Kontrollen är utfört redan
+   * innan anropet att strResult pekar på något.
+   *
+   * @param strResult
+   */
+  private static void putCenterText(List<String> strResult) {
+    tfResultList.clear();
+    tfResultList.addAll(strResult);
+  }
+
+  /**
+   * Rutin som visar i status texten ett felmeddelande
+   *
+   * @param str - Meddelandet
+   */
+  private static void setStatusError(String str) {
+    statusText.setText(str);
+    statusText.setTextFill(Color.RED);
+  }
+
+  /**
+   * Rutin som visar i status texten ett ok-meddelande
+   *
+   * @param str - Meddelandet
+   */
+  private static void setStatusOk(String str) {
+    statusText.setText(str);
+    statusText.setTextFill(Color.GREEN);
+  }
+
+  // bank-hanteraren
+  private BankLogic bank = new BankLogic();
 
   /**
    * Rutin som fixar alla konton till ett pNr, Givet att pNr är ifyllt
@@ -127,56 +194,15 @@ public class Main extends Application {
   }
 
   /**
-   * Hjälprutin som kollar att belopp är utan decimaler. Systemet är byggt på
-   * modellen integer.
-   *
-   * @param index - Beloppet som ska kollas upp
-   */
-  private void bankBeloppCheck(short index) {
-    String str = tfBelopp[index].getText();
-    int pos = str.indexOf("."); // Ta bort allt efter .
-    if (pos > -1) {
-      str = str.substring(0, pos);
-    }
-    pos = str.indexOf(","); // Ta bort allt efter ,
-    if (pos > -1) {
-      str = str.substring(0, pos);
-    }
-    tfBelopp[index].setText(str);
-  }
-
-  /**
-   * Rutin som utför menyval under Konto
-   *
-   * @param index - Menyvalet
-   */
-  private void bankMenuAccount(short index) {
-    switch (index) {
-    case 0, 1, 2, 3, 4, 5, 6: // Konto kommando
-      borderPane.setLeft(vbox[index + 4]);
-      break;
-    default:
-      setStatusError("Konton, index = " + index);
-      break;
-    }
-  }
-
-  /**
    * Rutin som utför kommandon under Kund
    *
    * @param index - Menyvalet
    */
   private void bankMenuCustomer(short index) {
     switch (index) {
-    case 0, 1, 2, 3: // Kund kommando
-      borderPane.setLeft(vbox[index]);
-      break;
-    case 4: // Lista alla kunder
-      getBankAllCustomers();
-      break;
-    default:
-      setStatusError("Kund, index = " + index);
-      break;
+    case 0, 1, 2, 3 -> borderPane.setLeft(vbox[index]);
+    case 4 -> getBankAllCustomers();
+    default -> setStatusError("Kund, index = " + index);
     }
   }
 
@@ -187,21 +213,12 @@ public class Main extends Application {
    */
   private void bankMenuFile(short index) {
     switch (index) {
-    case 0:
-      setStatusError("Läs in banken");
-      break;
-    case 1:
-      setStatusError("Spara banken");
-      break;
-    case 2:
-      setStatusError("Spara transaktioner");
-      break;
-    case 3:
-      System.exit(0);
-      break;
-    default:
-      setStatusError("File, index = " + index);
-      break;
+    case 0 -> setStatusError("Läs in banken");
+    case 1 -> setStatusError("Spara banken");
+    case 2 -> setStatusError("Spara transaktioner");
+    case 3 -> setStatusError("Visa transaktioner");
+    case 4 -> System.exit(0);
+    default -> setStatusError("File, index = " + index);
     }
   }
 
@@ -212,42 +229,18 @@ public class Main extends Application {
    */
   private void bankMenuSave(short index) {
     switch (index) {
-    case 0: // Spara ny kund
-      createBankCustomer();
-      break;
-    case 1: // Hämta EN kund
-      getBankCustomer();
-      break;
-    case 2: // Byt namn på kund
-      changeBankCustomerName();
-      break;
-    case 3: // Ta bort kund
-      deletBankCustomer();
-      break;
-    case 4: // Skapa Sparkonto
-      createBankSavingAccount();
-      break;
-    case 5: // Skapa Kreditkonto
-      createBankCreditAccount();
-      break;
-    case 6: // Saldo
-      getBankAccount();
-      break;
-    case 7: // Sätta in
-      depositBankAccount();
-      break;
-    case 8: // Ta ut
-      withdrawBankAccount();
-      break;
-    case 9: // Transaktioner
-      getBankTransactions();
-      break;
-    case 10: // Ta bort konto
-      closeBankAccount();
-      break;
-    default:
-      setStatusError("Save button, index = " + index);
-      break;
+    case 0 -> createBankCustomer();
+    case 1 -> getBankCustomer();
+    case 2 -> changeBankCustomerName();
+    case 3 -> deletBankCustomer();
+    case 4 -> createBankSavingAccount();
+    case 5 -> createBankCreditAccount();
+    case 6 -> getBankAccount();
+    case 7 -> depositBankAccount();
+    case 8 -> withdrawBankAccount();
+    case 9 -> getBankTransactions();
+    case 10 -> closeBankAccount();
+    default -> setStatusError("Save button, index = " + index);
     }
   }
 
@@ -271,9 +264,7 @@ public class Main extends Application {
       if (!strKonto.isBlank()) {
         String str = bank.closeAccount(tfPNo[10].getText(), Integer.parseInt(strKonto));
         if (str != null) {
-          List<String> result = new ArrayList<>();
-          result.add(str);
-          putCenterText(result);
+          putCenterText(List.of(str));
         }
       }
     } catch (Exception e) {
@@ -288,9 +279,7 @@ public class Main extends Application {
   private void createBankCreditAccount() {
     int accountId = bank.createCreditAccount(tfPNo[5].getText());
     if (accountId > 0) {
-      List<String> result = new ArrayList<>();
-      result.add("Kontonummer: " + accountId);
-      putCenterText(result);
+      putCenterText(List.of("Kontonummer: " + accountId));
     } else {
       setStatusError(NOTSAVED);
     }
@@ -313,9 +302,7 @@ public class Main extends Application {
   private void createBankSavingAccount() {
     int accountId = bank.createSavingsAccount(tfPNo[4].getText());
     if (accountId > 0) {
-      List<String> result = new ArrayList<>();
-      result.add("Kontonummer: " + accountId);
-      putCenterText(result);
+      putCenterText(List.of("Kontonummer: " + accountId));
     } else {
       setStatusError(NOTSAVED);
     }
@@ -357,9 +344,7 @@ public class Main extends Application {
       if (!strKonto.isBlank()) {
         String str = bank.getAccount(tfPNo[6].getText(), Integer.parseInt(strKonto));
         if (str != null) {
-          List<String> result = new ArrayList<>();
-          result.add(str);
-          putCenterText(result);
+          putCenterText(List.of(str));
         }
       }
     } catch (Exception e) {
@@ -392,47 +377,77 @@ public class Main extends Application {
    */
   private void getBankTransactions() {
     String strKonto = tfKontoNr[9].getSelectionModel().getSelectedItem();
-    try {
-      if (!strKonto.isBlank()) {
-        List<String> result = bank.getTransactions(tfPNo[9].getText(), Integer.parseInt(strKonto));
-        if (result != null) {
-          putCenterText(result);
+    if (strKonto != null && !strKonto.isBlank()) {
+      try {
+        int kontoNummer = Integer.parseInt(strKonto);
+        List<String> result = bank.getTransactions(tfPNo[9].getText(), kontoNummer);
+
+        if (result != null && !result.isEmpty()) {
+          List<String> newResult = Stream.concat(Stream.of("Transaktioner för konto: " + strKonto), result.stream())
+              .toList();
+
+          putCenterText(newResult);
+        } else {
+          setStatusOk("Inga transaktioner för konto: " + strKonto);
         }
+      } catch (NumberFormatException e) {
+        setStatusError("Felaktigt kontonummerformat: " + strKonto);
+      } catch (Exception e) {
+        setStatusError("Ett fel uppstod vid hämtning av transaktioner för konto: " + strKonto);
+        e.printStackTrace();
       }
-    } catch (Exception e) {
-      setStatusError("Felaktigt kontonummer: " + strKonto);
     }
   }
 
   /**
-   * Hjälprutin som sätter texten i centrum rutan. Kontrollen är utfört redan
-   * innan anropet att strResult pekar på något.
+   * Rutin som initierar en VBox med olika kontroller
    *
-   * @param strResult
+   * @param index           - Vilken VBox som ska initieras
+   * @param withName        - Om det ska vara med förnamn
+   * @param withSurname     - Om det ska vara med efternamn
+   * @param withAccountList - Om det ska vara med kontolnr
+   * @param withAmount      - Om det ska vara med belopp
    */
-  private void putCenterText(List<String> strResult) {
-    tfResultList.clear();
-    tfResultList.addAll(strResult);
-  }
+  private void initVBox(short index, boolean withName, boolean withSurname, boolean withAccountList,
+      boolean withAmount) {
+    vbox[index] = new VBox(10);
 
-  /**
-   * Rutin som visar i status texten ett felmeddelande
-   *
-   * @param str - Meddelandet
-   */
-  private void setStatusError(String str) {
-    statusText.setText(str);
-    statusText.setTextFill(Color.RED);
-  }
+    labelPNo[index] = new Label("Personnummer: ");
+    tfPNo[index] = new TextField();
+    vbox[index].getChildren().addAll(labelPNo[index], tfPNo[index]);
 
-  /**
-   * Rutin som visar i status texten ett ok-meddelande
-   *
-   * @param str - Meddelandet
-   */
-  private void setStatusOk(String str) {
-    statusText.setText(str);
-    statusText.setTextFill(Color.GREEN);
+    if (withName) {
+      labelName[index] = new Label("Förnamn: ");
+      tfName[index] = new TextField();
+      vbox[index].getChildren().addAll(labelName[index], tfName[index]);
+    }
+
+    if (withSurname) {
+      labelSurname[index] = new Label("Efternamn: ");
+      tfSurname[index] = new TextField();
+      vbox[index].getChildren().addAll(labelSurname[index], tfSurname[index]);
+    }
+
+    if (withAccountList) {
+      labelKontoNr[index] = new Label("Kontonr: ");
+      tfKontoNr[index] = new ListView<>(tfKontoList);
+      vbox[index].getChildren().addAll(labelKontoNr[index], tfKontoNr[index]);
+    }
+
+    if (withAmount) {
+      labelBelopp[index] = new Label("Belopp: ");
+      tfBelopp[index] = new TextField();
+      vbox[index].getChildren().addAll(labelBelopp[index], tfBelopp[index]);
+    }
+
+    saveButton[index] = new Button(strButton[index]);
+    final short finalIndex = index;
+    saveButton[index].setOnAction(_ -> bankMenuSave(finalIndex));
+    tfPNo[index].focusedProperty().addListener(_ -> bankAccountList(finalIndex));
+    if (withAmount) {
+      tfBelopp[index].focusedProperty().addListener(_ -> bankBeloppCheck(finalIndex));
+    }
+    vbox[index].getChildren().add(saveButton[index]);
   }
 
   @Override
@@ -442,8 +457,7 @@ public class Main extends Application {
       // Sätter en titel på fönstret till "BankSystem"
       primaryStage.setTitle("BankSystem");
 
-      // Fixar alla menyer på plats
-      // Initierar olika variabler.
+      // === Meny: File ===
       for (i = 0; i < strMenuFile.length; i++) {
         menuItemFile[i] = new MenuItem(strMenuFile[i]);
         final short indexFile = i;
@@ -454,6 +468,7 @@ public class Main extends Application {
         menuFile.getItems().add(menuItemFile[i]);
       }
 
+      // === Meny: Kund ===
       for (i = 0; i < strMenuCustomer.length; i++) {
         menuItemCustomer[i] = new MenuItem(strMenuCustomer[i]);
         final short indexCustomer = i;
@@ -461,6 +476,7 @@ public class Main extends Application {
         menuCustomer.getItems().add(menuItemCustomer[i]);
       }
 
+      // === Meny: Konton ===
       for (i = 0; i < strMenuAccount.length; i++) {
         menuItemAccount[i] = new MenuItem(strMenuAccount[i]);
         final short indexAccount = i;
@@ -468,63 +484,14 @@ public class Main extends Application {
         menuAccount.getItems().add(menuItemAccount[i]);
       }
 
-      // Initierar alla "sidor" med olika fält
+      // === Initierar varje "sida" ===
       for (i = 0; i < strButton.length; i++) {
-
-        labelPNo[i] = new Label("Personnummer: ");
-        tfPNo[i] = new TextField();
-
-        labelName[i] = new Label("Förnamn: ");
-        tfName[i] = new TextField();
-
-        labelSurname[i] = new Label("Efternamn: ");
-        tfSurname[i] = new TextField();
-
-        labelKontoNr[i] = new Label("Kontonr: ");
-        tfKontoNr[i] = new ListView<>(tfKontoList);
-
-        labelBelopp[i] = new Label("Belopp: ");
-        tfBelopp[i] = new TextField();
-
-        saveButton[i] = new Button(strButton[i]);
-
-        // Aktivera händelser efter inmatning på valda fält
-        final short index = i;
-        saveButton[i].setOnAction(_ -> bankMenuSave(index));
-        tfPNo[i].focusedProperty().addListener(_ -> bankAccountList(index));
-        tfBelopp[i].focusedProperty().addListener(_ -> bankBeloppCheck(index));
-        vbox[i] = new VBox(10);
-        vbox[i].getChildren().addAll(labelPNo[i], tfPNo[i]); // pNo finns på alla vbox, även button men den ska vara
-                                                             // sist.
-      }
-
-      // Initiering av vbox som innehåller olika element, har redan lite initierat
-
-      // Meny Kund kommandon
-      // Spara ny kund
-      vbox[0].getChildren().addAll(labelName[0], tfName[0], labelSurname[0], tfSurname[0]);
-
-      // Byt namn på en kund
-      vbox[2].getChildren().addAll(labelName[2], tfName[2], labelSurname[2], tfSurname[2]);
-
-      // Saldo
-      vbox[6].getChildren().addAll(labelKontoNr[6], tfKontoNr[6]);
-
-      // Sätta in
-      vbox[7].getChildren().addAll(labelKontoNr[7], tfKontoNr[7], labelBelopp[7], tfBelopp[7]);
-
-      // Ta ut
-      vbox[8].getChildren().addAll(labelKontoNr[8], tfKontoNr[8], labelBelopp[8], tfBelopp[8]);
-
-      // Transaktioner
-      vbox[9].getChildren().addAll(labelKontoNr[9], tfKontoNr[9]);
-
-      // Ta bort konto
-      vbox[10].getChildren().addAll(labelKontoNr[10], tfKontoNr[10]);
-
-      // Sätt saveButtons sist
-      for (i = 0; i < strButton.length; i++) {
-        vbox[i].getChildren().add(saveButton[i]);
+        switch (i) {
+        case 0, 2 -> initVBox(i, true, true, false, false); // Spara kund, Byt namn
+        case 6, 9, 10 -> initVBox(i, false, false, true, false); // Hämta saldo, Transaktioner, Ta bort konto
+        case 7, 8 -> initVBox(i, false, false, true, true); // Sätta in/ta ut
+        default -> initVBox(i, false, false, false, false); // Hämta kund, Ta bort kund, Skapa spar- och kredit-konton
+        }
       }
 
       imageVBox.getChildren().addAll(bagImageView, piggyImageView, safeImageView);

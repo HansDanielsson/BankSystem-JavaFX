@@ -57,6 +57,17 @@ public class Customer {
   }
 
   /**
+   * Rutin som tar bort konton till en kund givet att alla transaktioner redan är
+   * bortagna
+   */
+  protected void deleteAccounts() {
+    if (accounts != null) {
+      accounts.clear();
+    }
+    accounts = null;
+  }
+
+  /**
    * Rutin som ger ut den privata listan men konton, accounts
    *
    * @return pekare till listan

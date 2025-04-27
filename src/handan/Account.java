@@ -4,7 +4,9 @@
  */
 package handan;
 
-// Importsatser
+/**
+ * Importsatser
+ */
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -13,18 +15,64 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-// Klassdeklarationer för Kontot
 public abstract class Account {
 
-  // Variabler som är gemensamt för alla konton
+  /**
+   * Variabel som är gemensam för alla konton
+   */
   private static int lastAssignedNumber = 1000;
   private static String accountName = "Sparkonto";
 
-  // Variabler för enskilda konton
+  /**
+   * Privat hjälprutin till BigDecimal som byter "," till "." Underlättar vid
+   * kommande listor som är med avgränsare ,
+   *
+   * @param str
+   * @return Nu med punkt
+   */
+  private static String makePointCurrency(BigDecimal theValue) {
+    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
+    str = str.replace(',', '.');
+    return str;
+  }
+
+  /**
+   * Protected hjälprutin till double som byter "," till "." Underlättar vid
+   * kommande listor som är med avgränsare ,
+   *
+   * @param str
+   * @return Nu med punkt
+   */
+  protected static String makePointCurrency(double theValue) {
+    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
+    str = str.replace(',', '.');
+    return str;
+  }
+
+  /**
+   * Protected hjälprutin till int som byter "," till "." Underlättar vid kommande
+   * listor som är med avgränsare ,
+   *
+   * @param str
+   * @return Nu med punkt
+   */
+  protected static String makePointCurrency(int theValue) {
+    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
+    str = str.replace(',', '.');
+    return str;
+  }
+
+  /**
+   * Variabler för enskilda konton
+   */
   private int accountNumber; // 1001, 1002, 1003, 1004 osv.
+
   private String accountType;
+
   private BigDecimal balance;
+
   private BigDecimal interestRate;
+
   private List<String> transactions = null;
 
   // Default Konstruktor för ett nytt bankkonto
@@ -76,6 +124,17 @@ public abstract class Account {
    * @return x xxx kr
    */
   protected abstract String calculateInterest();
+
+  /**
+   * Rutin som tar bort dess transaktioner
+   */
+  protected void deleteTransactions() {
+    // Tar bort alla transaktioner
+    if (transactions != null) {
+      transactions.clear();
+    }
+    transactions = null;
+  }
 
   /**
    * Rutin som sätter in beloppet (theAmount) till saldo (balance) Kontroll har
@@ -148,45 +207,6 @@ public abstract class Account {
     String strPercent = percentFormat.format(theInterestRate / 100.0);
     strPercent = strPercent.replace(',', '.'); // Men decimal punkt
     return accountNumber + " " + makePointCurrency(balance) + " " + accountType + " " + strPercent;
-  }
-
-  /**
-   * Privat hjälprutin till BigDecimal som byter "," till "." Underlättar vid
-   * kommande listor som är med avgränsare ,
-   *
-   * @param str
-   * @return Nu med punkt
-   */
-  private String makePointCurrency(BigDecimal theValue) {
-    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
-    str = str.replace(',', '.');
-    return str;
-  }
-
-  /**
-   * Protected hjälprutin till double som byter "," till "." Underlättar vid
-   * kommande listor som är med avgränsare ,
-   *
-   * @param str
-   * @return Nu med punkt
-   */
-  protected String makePointCurrency(double theValue) {
-    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
-    str = str.replace(',', '.');
-    return str;
-  }
-
-  /**
-   * Protected hjälprutin till int som byter "," till "." Underlättar vid kommande
-   * listor som är med avgränsare ,
-   *
-   * @param str
-   * @return Nu med punkt
-   */
-  protected String makePointCurrency(int theValue) {
-    String str = NumberFormat.getCurrencyInstance(Locale.of("SV", "SE")).format(theValue);
-    str = str.replace(',', '.');
-    return str;
   }
 
   /**
